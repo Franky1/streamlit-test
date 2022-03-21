@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import os
 
-filepath2 = 'src/exon_coordinates.tsv'
+filepath2 = '/app/streamlit-test/src/exon_coordinates.tsv'
 filepath3 = 'src/exon_coordinates.tsv'
 filepath4 = '/src/exon_coordinates.tsv' 
 
