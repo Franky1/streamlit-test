@@ -1,5 +1,7 @@
 import pandas as pd
 import streamlit as st
+import requests
+
 
 filepath1 = 'https://github.com/FlorianBrnrd/streamlit-test/blob/f031dde0cf1f0265aff6fe1ac8a2df50a08ec501/web-app/src/exon_coordinates.tsv'
 filepath2 = './src/exon_coordinates.tsv'
