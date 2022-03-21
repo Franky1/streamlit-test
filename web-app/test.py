@@ -7,7 +7,7 @@ filepath3 = 'src/exon_coordinates.tsv'
 filepath4 = '/src/exon_coordinates.tsv' 
 
 
-print(os.getwd())
+print(os.getcwd())
 
 for path in [filepath2,filepath3,filepath4]:
 
