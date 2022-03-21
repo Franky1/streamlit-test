@@ -17,12 +17,12 @@ from dna_features_viewer import GraphicFeature, GraphicRecord
 
 ###### OPEN FILES
 
-genes_start = pd.read_csv('src/SL_&_mimic_positions.tsv', sep='\t')
+#genes_start = pd.read_csv('src/SL_&_mimic_positions.tsv', sep='\t')
 
 genesref = pd.read_csv('src/genes_coordinates.tsv', sep='\t')
 
 
-_genesfound = list(genes_start['gene'])
+#_genesfound = list(genes_start['gene'])
 refname = genesref[genesref['CDS'].isin(_genesfound)]
 refname['name'] = refname.apply(lambda x: x['name'] if x['name']==x['name'] else x['CDS'], axis=1)
 
@@ -31,8 +31,9 @@ refname = refname.iloc[refname.name.str.lower().argsort()]
 refname = refname.set_index('CDS')['name'].to_dict()
 #refname = {k: v for k, v in sorted(refname.items(), key=lambda x: x[1])}
 
-exonslist = pd.read_csv('/Users/florian/Bioinfo/Manuscript_old/Bioinformatics analysis/exon_coordinates.tsv', sep='\t')
+exonslist = pd.read_csv('src/exon_coordinates.tsv', sep='\t')
 
+print('woorhay')
 
 ##### FUNCTIONS
 
