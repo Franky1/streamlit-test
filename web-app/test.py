@@ -11,10 +11,8 @@ st.write(os.getcwd())
 for path in [filepath2,filepath3]:
 
     st.write(path)
-    try:
-        table = pd.read_csv(path, sep='\t')
-        st.write(table)
-    except:
-        st.write('not working')
+    table = pd.read_csv(path, sep='\t')
+    st.write(table)
+    
     
 
