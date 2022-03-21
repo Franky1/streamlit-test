@@ -9,7 +9,13 @@ filepath4 = '/src/exon_coordinates.tsv'
 
 for path in [filepath1,filepath2,filepath3,filepath4]:
     
-    st.write(path)
-    table = pd.read_csv(path, sep='\t')
-    st.write(table)
-    
+    if 'github' in path:
+        st.write(path)
+        s = requests.get(path).content
+        table = pd.read_csv(s, sep='\t')
+   
+    else:
+        st.write(path)
+        table = pd.read_csv(path, sep='\t')
+        st.write(table)
+
