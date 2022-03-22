@@ -104,7 +104,7 @@ def show_legend():
     legend_header = '<span style="font-size:150%; font-weight: bold;">Figure legend:<br></span>'
     st.markdown(legend_header, unsafe_allow_html=True)
 
-    cols = st.columns([0.27,0.03,0.7])
+    cols = st.columns([0.22,0.03,0.75])
 
     with cols[0]:
 
