@@ -62,44 +62,6 @@ def app_settings():
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
-
-    st.markdown(
-            """
-            <style>
-        /* fallback */
-        @font-face {
-          font-family: 'Material Icons';
-          font-style: normal;
-          font-weight: 400;
-          src: url(https://fonts.gstatic.com/s/materialicons/v126/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2) format('woff2');
-        }
-        
-        .material-icons {
-          font-family: 'Material Icons';
-          font-weight: normal;
-          font-style: normal;
-          font-size: 24px;
-          line-height: 1;
-          letter-spacing: normal;
-          text-transform: none;
-          display: inline-block;
-          white-space: nowrap;
-          word-wrap: normal;
-          direction: ltr;
-          -webkit-font-feature-settings: 'liga';
-          -webkit-font-smoothing: antialiased;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True)
-
-
-
-
-
-
-
-
 def chose_gene(GENES, GENESNAME):
 
     st.sidebar.write('### 1. Chose gene to plot:')
