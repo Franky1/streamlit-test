@@ -133,7 +133,7 @@ def main():
 
 
     # open ref files and cache them
-    genes, exons, dataset, GENES, GENESNAME = get_reference_files()
+    genes, exons, dataset, GENES, GENESNAME, ATGPOSITIONS = get_reference_files()
 
 
 

@@ -49,10 +49,10 @@ def get_reference_files():
 
     path = os.getcwd()
 
-    genes = pd.read_csv(f'{path}/web-app/src/exon_coordinates.tsv')
-    exons = pd.read_csv(f'{path}/web-app/src/genes_coordinates.tsv')
-    dataset = pd.read_csv(f'{path}/web-app/src/SL_&_mimic_positions.tsv')
-    atg = pd.read_csv(f'{path}/web-app/src/CDS_start_positions.tsv')
+    genes = pd.read_csv(f'{path}/web-app/src/exon_coordinates.tsv', sep='\t')
+    exons = pd.read_csv(f'{path}/web-app/src/genes_coordinates.tsv', sep='\t')
+    dataset = pd.read_csv(f'{path}/web-app/src/SL_&_mimic_positions.tsv', sep='\t')
+    atg = pd.read_csv(f'{path}/web-app/src/CDS_start_positions.tsv', sep='\t')
 
     GENES = list(set(dataset['gene']))
 
