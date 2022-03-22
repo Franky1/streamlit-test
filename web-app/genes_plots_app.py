@@ -5,6 +5,9 @@ from helper_functions import gene_start_positions, get_reference_files, get_lege
 
 
 def bottom_infos():
+
+    st.sidebar.empty()
+
     st.sidebar.markdown("""---""")
 
     devname = """App created by <b>Florian Bernard</b>."""
@@ -106,7 +109,7 @@ def show_legend():
     with cols[0]:
 
         legendfile = get_legend_filepath()
-        header_html = "<img src='data:image/png;base64,{}' class='img-fluid' width=300>"
+        header_html = "<img src='data:image/png;base64,{}' class='img-fluid' width=100>"
         st.markdown(header_html.format(img_to_bytes(legendfile)), unsafe_allow_html=True)
 
     with cols[2]:
@@ -128,17 +131,6 @@ def main():
 
     # chose plot settings
     atg_option = plot_settings()
-
-
-
-
-    test_text = """
-                <div style="background: ghostwhite; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
-        Text goes here, how are you today ?
-    </div>
-                """
-
-    st.markdown(test_text , unsafe_allow_html=True)
 
     if gene is None:
         st.error('No gene detected')

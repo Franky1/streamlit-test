@@ -1,2 +1,9 @@
 
 web-app/.DS_Store
+.DS_Store
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/streamlit-test.iml
+.idea/vcs.xml
