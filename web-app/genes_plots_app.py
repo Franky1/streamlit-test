@@ -105,10 +105,10 @@ def display_gene_infos(gene, refgene):
 
     #gene_header = '<span style="font-size:150%; font-weight: bold;">Input gene:</span>'
 
-    gene_header = '<div style="background: ghostwhite; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">' \
-                  'Input gene: <br>' \
+    gene_header = '<div style="background: ghostwhite; font-size: 20px; padding: 10px; border-radius: 10px; border: 1px solid lightgray; margin: 10px;">' \
+                  '<b>Input gene:</b><br>' \
                   f'{gene} ({refgene})<br>' \
-                  'genomic location: chromosome X - 124058688:27465858' \
+                  '<b>Genomic location:</b> chromosome X - 124058688:27465858' \
                   '</div>'
 
 
