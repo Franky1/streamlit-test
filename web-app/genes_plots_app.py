@@ -104,19 +104,19 @@ def show_legend():
     st.write('### Figure legend:')
     st.write('###')
 
-    cols = st.columns([1, 0.1, 1.9])
+    cols = st.columns([0.25,0.05,0.7])
 
     with cols[0]:
 
         legendfile = get_legend_filepath()
-        header_html = "<img src='data:image/png;base64,{}' class='img-fluid' width=100>"
+        header_html = "<img src='data:image/png;base64,{}' class='img-fluid' width=200>"
         st.markdown(header_html.format(img_to_bytes(legendfile)), unsafe_allow_html=True)
 
     with cols[2]:
         st.write('Each alignment start position observed was plotted at the corresponding genomic position with the number of '
                  'supporting reads. The dots are colored according to the observed trans-splicing events '
                  'with red indicating a majority of SL reads, green a majority of endogenous hairpin reads'
-                 'and blue reads with no evidence for either.') 
+                 'and blue reads with no evidence for either.')
 
 
 
