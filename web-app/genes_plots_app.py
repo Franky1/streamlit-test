@@ -130,11 +130,15 @@ def main():
     atg_option = plot_settings()
 
 
-    text = """ <div style="background: ghostwhite; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
-        Text goes here, how are you today ?
-    </div>"""
 
-    st.markdown(text , unsafe_allow_html=True)
+
+    test_text = """
+                <div style="background: ghostwhite; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
+        Text goes here, how are you today ?
+    </div>
+                """
+
+    st.markdown(test_text , unsafe_allow_html=True)
 
     if gene is None:
         st.error('No gene detected')
