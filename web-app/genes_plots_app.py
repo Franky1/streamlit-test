@@ -101,8 +101,8 @@ def plot_settings():
 def show_legend():
 
     st.write('#')
-    st.write('### Figure legend:')
-    st.write('###')
+    legend_header = '<span style="font-size:150%; font-weight: bold;">Figure legend:<br></span>'
+    st.markdown(legend_header, unsafe_allow_html=True)
 
     cols = st.columns([0.25,0.05,0.7])
 
@@ -119,7 +119,7 @@ def show_legend():
         'with red indicating a majority of SL reads, green a majority of endogenous hairpin reads '
         'and blue reads with no evidence for either.'
 
-        legend_html = f'<span style="font-size:200%; font-weight: bold;">{legend_txt}</span>'
+        legend_html = f'<span style="font-size:150%;">{legend_txt}</span>'
         st.markdown(legend_html, unsafe_allow_html=True)
 
 
