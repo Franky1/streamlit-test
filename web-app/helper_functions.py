@@ -16,8 +16,6 @@ def isoform_to_gene(isoform):
     else:
         return None
 
-
-
 @st.cache(show_spinner=False)
 def get_gene_ref(genes, GENES):
 
@@ -133,7 +131,7 @@ def GeneStructure(gene, genes_coord, exons_coord, return_coordinates=False):
         return gene_start, length, record
 
 
-def gene_start_positions(datatset, gene, genes_coord, exons_coord, GENESNAME, ATGPOSITION, show_atg=True):
+def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATGPOSITION, show_atg=True):
 
     # get common name
 
@@ -159,7 +157,7 @@ def gene_start_positions(datatset, gene, genes_coord, exons_coord, GENESNAME, AT
 
     #### computing --------------------------
 
-    gene_df = datatset[datatset['gene'] == gene]
+    gene_df = dataset[dataset['gene'] == gene]
 
     #### plotting --------------------------
 
@@ -201,3 +199,9 @@ def gene_start_positions(datatset, gene, genes_coord, exons_coord, GENESNAME, AT
     fig.suptitle(name, weight='bold', style='italic', size=14)
 
     return fig
+
+
+def get_legend_filepath():
+    path = os.getcwd()
+    filepath = f'{path}/web-app/src/legend.png'
+    return filepath

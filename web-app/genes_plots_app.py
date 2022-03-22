@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import base64
 
-from helper_functions import gene_start_positions, get_reference_files
+from helper_functions import gene_start_positions, get_reference_files, get_legend_filepath
 
 
 
@@ -117,9 +117,10 @@ def show_legend():
     cols = st.columns([1, 0.1, 1.9])
 
     with cols[0]:
-        file = f'/Users/florian/PycharmProjects/arna/legend.png' # todo: add legend file to github repo
+
+        legendfile = get_legend_filepath()
         header_html = "<img src='data:image/png;base64,{}' class='img-fluid' width=300>"
-        st.markdown(header_html.format(img_to_bytes(file)), unsafe_allow_html=True)
+        st.markdown(header_html.format(img_to_bytes(legendfile)), unsafe_allow_html=True)
 
     with cols[2]:
         st.write('LEGEND GOES HERE')  # todo: add legend text
@@ -135,15 +136,11 @@ def main():
     # open ref files and cache them
     genes, exons, dataset, GENES, GENESNAME, ATGPOSITIONS = get_reference_files()
 
-
-
     # chose gene to plot
     gene, refgene = chose_gene(GENES, GENESNAME)
 
-
     # chose plot settings
     atg_option = plot_settings()
-
 
     if gene is None:
         st.error('No gene detected')
@@ -155,7 +152,8 @@ def main():
             st.write(f'### Selected gene: {gene}')
 
         # generate gene plot
-        gene_plot = gene_start_positions(gene, genes_coord=genes, exons_coord=exons,  show_atg=atg_option)
+        gene_plot = gene_start_positions(dataset, gene, genes, exons, GENESNAME, ATGPOSITIONS, show_atg=atg_option)
+
         # show plot with streamlit
         st.pyplot(gene_plot)
         # add legend below
@@ -163,8 +161,6 @@ def main():
 
         # show only if plot was generated
         download_plot()
-
-
 
     # show app/labs infos
     #show_biorxiv()
