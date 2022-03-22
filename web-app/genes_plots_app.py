@@ -113,7 +113,10 @@ def show_legend():
         st.markdown(header_html.format(img_to_bytes(legendfile)), unsafe_allow_html=True)
 
     with cols[2]:
-        st.write('LEGEND GOES HERE')  # todo: add legend text
+        st.write('Each alignment start position observed was plotted at the corresponding genomic position with the number of '
+                 'supporting reads. The dots are colored according to the observed trans-splicing events '
+                 'with red indicating a majority of SL reads, green a majority of endogenous hairpin reads'
+                 'and blue reads with no evidence for either.') 
 
 
 
