@@ -201,6 +201,8 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
 
 
 def get_legend_filepath():
+
     path = os.getcwd()
     filepath = f'{path}/web-app/src/legend.png'
+
     return filepath

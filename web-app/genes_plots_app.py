@@ -98,11 +98,26 @@ def plot_settings():
     return atg_option
 
 
+def display_gene_infos(gene, refgene):
+
+
+
+
+    #gene_header = '<span style="font-size:150%; font-weight: bold;">Input gene:</span>'
+
+    gene_header = '<div style="background: ghostwhite; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">Input gene: </div>'
+
+
+    st.markdown(gene_header, unsafe_allow_html=True)
+
+
+
 def show_legend():
 
     st.write('#')
-    legend_header = '<span style="font-size:150%; font-weight: bold;">Figure legend:<br></span>'
+    legend_header = '<span style="font-size:150%; font-weight: bold;">Figure legend:</span>'
     st.markdown(legend_header, unsafe_allow_html=True)
+    st.write('##')
 
     cols = st.columns([0.22,0.03,0.75])
 
@@ -144,6 +159,9 @@ def main():
         st.error('No gene detected')
 
     else:
+
+        display_gene_infos(gene, refgene)
+
         if refgene != gene:
             st.write(f'### Selected gene: {refgene} ({gene})')
         else:
