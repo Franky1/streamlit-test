@@ -104,12 +104,12 @@ def show_legend():
     legend_header = '<span style="font-size:150%; font-weight: bold;">Figure legend:<br></span>'
     st.markdown(legend_header, unsafe_allow_html=True)
 
-    cols = st.columns([0.25,0.05,0.7])
+    cols = st.columns([0.27,0.03,0.7])
 
     with cols[0]:
 
         legendfile = get_legend_filepath()
-        header_html = "<img src='data:image/png;base64,{}' class='img-fluid' width=200>"
+        header_html = "<img src='data:image/png;base64,{}' class='img-fluid' width=180>"
         st.markdown(header_html.format(img_to_bytes(legendfile)), unsafe_allow_html=True)
 
     with cols[2]:
