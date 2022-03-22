@@ -170,7 +170,7 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
     b = [i/100 for i in list(gene_df['%unidentified'])]
     col = list(zip(r, g, b))
 
-    axis2.scatter(x, y, c=col, s=120, alpha=1, edgecolor='k')
+    axis2.scatter(x, y, c=col, s=120, alpha=1, edgecolor=None)
 
     _max = max(y)*1.1
 
