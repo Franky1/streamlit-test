@@ -142,9 +142,8 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
     sns.set_style("white")
     fig = plt.figure(figsize=(8, 5), dpi=800)
 
-    grid = fig.add_gridspec(2, 1,
-                            height_ratios=[1.5, 6],
-                            top=1.05, bottom=0.08, right=0.95, left=0.08, hspace=0.1, wspace=0)
+    grid = fig.add_gridspec(2, 1, height_ratios=[1, 6],
+                            top=1.05, bottom=0.08, right=0.95, left=0.08, hspace=0.15, wspace=0)
 
     # Gene structure ----------------------
 
