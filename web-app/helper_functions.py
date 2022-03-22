@@ -140,7 +140,7 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
     # plot setting ----------------------
 
     sns.set_style("white")
-    fig = plt.figure(figsize=(8, 5), dpi=300)
+    fig = plt.figure(figsize=(8, 5), dpi=800)
 
     grid = fig.add_gridspec(2, 1,
                             height_ratios=[1.5, 6],
@@ -196,7 +196,6 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
 
     axis2.set_xlim(start-(0.1*length), (start+(length*1.1)))
 
-    fig.suptitle(name, weight='bold', style='italic', size=14)
 
     return fig
 
