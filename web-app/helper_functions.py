@@ -170,7 +170,7 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
     b = [i/100 for i in list(gene_df['%unidentified'])]
     col = list(zip(r, g, b))
 
-    axis2.scatter(x, y, c=col, s=50, alpha=1, edgecolor='k', linewidth=0.1)
+    axis2.scatter(x, y, c=col, s=100, alpha=1, edgecolor='k', linewidth=0.1)
 
     # ATG ---------------------------------
     if show_atg:
@@ -185,8 +185,8 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
 
     # settings ----------------------------
 
-    axis2.set_ylabel('number of reads', weight='bold')
-    axis2.set_xlabel('genomic start position (bp)', weight='bold')
+    axis2.set_ylabel('number of reads', weight='bold', fontsize=18, labelpad=10)
+    axis2.set_xlabel('genomic start position (bp)', weight='bold', fontsize=18, labelpad=10)
     axis2.tick_params(axis='both', left=True, top=False, right=False, bottom=True,
                       labelleft=True, labeltop=False, labelright=False, labelbottom=True)
 
