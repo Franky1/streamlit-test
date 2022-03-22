@@ -1,15 +1,7 @@
 import streamlit as st
-import pandas as pd
-import os
 from pathlib import Path
 import base64
-
 from helper_functions import gene_start_positions, get_reference_files, get_legend_filepath
-
-
-
-
-
 
 
 def bottom_infos():
@@ -30,8 +22,8 @@ def bottom_infos():
 def download_plot():
     st.sidebar.write('### 3. Download .pdf plot:')
 
-    _ = 0
-    st.sidebar.download_button('📥 Download', _, file_name='test.pdf')
+    #_ = 0
+    #st.sidebar.download_button('📥 Download', _, file_name='test.pdf')
 
 
 
