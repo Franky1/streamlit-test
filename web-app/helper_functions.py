@@ -53,7 +53,9 @@ def get_reference_files():
     exons = pd.read_csv(f'{path}/web-app/src/genes_coordinates.tsv')
     dataset = pd.read_csv(f'{path}/web-app/src/SL_&_mimic_positions.tsv')
     atg = pd.read_csv(f'{path}/web-app/src/CDS_start_positions.tsv')
-
+    
+    st.write(dataset[:10])
+    
     GENES = list(set(dataset['gene']))
 
     GENESNAME = get_gene_ref(genes, GENES)
