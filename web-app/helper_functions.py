@@ -1,41 +1,67 @@
-import pandas as pd
-
-import seaborn as sns
-import time
-import matplotlib as mpl
-import matplotlib.patches as mpatches
-import matplotlib.ticker as ticker
+import os
+import re
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
-import matplotlib.image as mpimg
-from matplotlib.ticker import MaxNLocator, MultipleLocator, AutoMinorLocator
-from matplotlib.backends.backend_pdf import PdfPages
-
+import pandas as pd
+import seaborn as sns
+import streamlit as st
 from dna_features_viewer import GraphicFeature, GraphicRecord
 
 
+def isoform_to_gene(isoform):
 
-###### OPEN FILES
+    match = re.search(r"\w+.\d+", isoform)
 
-#genes_start = pd.read_csv('src/SL_&_mimic_positions.tsv', sep='\t')
+    if match is not None:
+        return match.group(0)
+    else:
+        return None
 
-genesref = pd.read_csv('src/genes_coordinates.tsv', sep='\t')
 
 
-#_genesfound = list(genes_start['gene'])
-refname = genesref[genesref['CDS'].isin(_genesfound)]
-refname['name'] = refname.apply(lambda x: x['name'] if x['name']==x['name'] else x['CDS'], axis=1)
+@st.cache(show_spinner=False)
+def get_gene_ref(genes, GENES):
 
-#refname = refname.sort_values('name',ascending=True)
-refname = refname.iloc[refname.name.str.lower().argsort()]
-refname = refname.set_index('CDS')['name'].to_dict()
-#refname = {k: v for k, v in sorted(refname.items(), key=lambda x: x[1])}
+    GENESNAME = genes[genes['CDS'].isin(GENES)]
+    GENESNAME['name'] = GENESNAME.apply(lambda x: x['name'] if x['name']==x['name'] else x['CDS'], axis=1)
+    GENESNAME = GENESNAME.iloc[GENESNAME.name.str.lower().argsort()]
+    GENESNAME = GENESNAME.set_index('CDS')['name'].to_dict()
 
-exonslist = pd.read_csv('src/exon_coordinates.tsv', sep='\t')
+    return GENESNAME
 
-print('woorhay')
 
-##### FUNCTIONS
+@st.cache(show_spinner=False)
+def get_atg_position(atg):
+
+    # convert transcript name to gene name
+    atg['gene'] = atg['transcript'].apply(lambda x: isoform_to_gene(x))
+
+    # create dict
+    ATGPOSITIONS = {}
+    for gene, positions in atg.groupby('gene'):
+        pos = list(set(positions['CDS_start']))
+        ATGPOSITIONS[gene] = pos
+
+    return ATGPOSITIONS
+
+
+@st.cache(show_spinner=False)
+def get_reference_files():
+
+    path = os.getcwd()
+
+    genes = pd.read_csv(f'{path}/web-app/src/exon_coordinates.tsv')
+    exons = pd.read_csv(f'{path}/web-app/src/genes_coordinates.tsv')
+    dataset = pd.read_csv(f'{path}/web-app/src/SL_&_mimic_positions.tsv')
+    atg = pd.read_csv(f'{path}/web-app/src/CDS_start_positions.tsv')
+
+    GENES = list(set(dataset['gene']))
+
+    GENESNAME = get_gene_ref(genes, GENES)
+
+    ATGPOSITIONS = get_atg_position(atg)
+
+    return genes, exons, dataset, GENES, GENESNAME, ATGPOSITIONS
+
 
 def OverlappingExons(start, end, exon):
     x, y = exon
@@ -45,20 +71,16 @@ def OverlappingExons(start, end, exon):
         return True
 
 
-def GeneStructure(gene, return_coordinates=False):
-
-    # Open reference files
-    exonslist = pd.read_csv('exon_coordinates.tsv', sep='\t')
-    geneslist = pd.read_csv('genes_coordinates.tsv', sep='\t')
+def GeneStructure(gene, genes_coord, exons_coord, return_coordinates=False):
 
     # Select exons for gene of interest and remove duplicates
-    exonslist = exonslist.loc[exonslist['gene'] == gene].drop_duplicates(['start', 'end']).sort_values('start')
+    exons_coord = exons_coord.loc[exons_coord['gene'] == gene].drop_duplicates(['start', 'end']).sort_values('start')
 
     # Process exons
     exons_set = []
     gene_structure = []
 
-    for _, exon in exonslist.iterrows():
+    for _, exon in exons_coord.iterrows():
 
         start = exon['start']
         end = exon['end']
@@ -73,7 +95,7 @@ def GeneStructure(gene, return_coordinates=False):
                 exons_set.append((start, end))
 
     color = {'+': '#ffd1df', '-': '#95d0fc'}
-    strand = exonslist['strand'].unique()[0]
+    strand = exons_coord['strand'].unique()[0]
 
     i = 1
     for exon in exons_set:
@@ -96,8 +118,8 @@ def GeneStructure(gene, return_coordinates=False):
                                              thickness=25, linewidth=1.5))
 
     # get start / end coordinates for the gene
-    gene_start = geneslist.loc[geneslist['CDS'] == gene, 'start'].values[0]
-    gene_end = geneslist.loc[geneslist['CDS'] == gene, 'end'].values[0]
+    gene_start = genes_coord.loc[genes_coord['CDS'] == gene, 'start'].values[0]
+    gene_end = genes_coord.loc[genes_coord['CDS'] == gene, 'end'].values[0]
 
     # Calculate isoform length
     length = gene_end - gene_start
@@ -111,19 +133,16 @@ def GeneStructure(gene, return_coordinates=False):
         return gene_start, length, record
 
 
-# main function for plotting gene start representated in our dataset
-# for each gene, the first aligned based of a read is considered the "start position"
-# for each representated start position (X axis), we plot the number of reads (Y axis)
-
-def gene_start_positions(gene, output=None, min_reads=None):
+def gene_start_positions(datatset, gene, genes_coord, exons_coord, GENESNAME, ATGPOSITION, show_atg=True):
 
     # get common name
-    name = f'{refname[gene]} ({gene})' if refname[gene] == refname[gene] else gene
+
+    name = f'{GENESNAME[gene]} ({gene})' if GENESNAME[gene] == GENESNAME[gene] else gene
 
     # plot setting ----------------------
 
     sns.set_style("white")
-    fig = plt.figure(figsize=(8, 5), dpi=300) # constrained_layout=True
+    fig = plt.figure(figsize=(8, 5), dpi=300)
 
     grid = fig.add_gridspec(2, 1,
                             height_ratios=[1.5, 6],
@@ -135,17 +154,16 @@ def gene_start_positions(gene, output=None, min_reads=None):
     axis1.grid(False)
     axis1.axis('off')
 
-    start, length, record = GeneStructure(gene, return_coordinates=True)
+    start, length, record = GeneStructure(gene, genes_coord, exons_coord, return_coordinates=True)
     record.plot(ax=axis1)
-
 
     #### computing --------------------------
 
-    gene_df = genes_start[genes_start['gene'] == gene]
+    gene_df = datatset[datatset['gene'] == gene]
 
     #### plotting --------------------------
 
-    axis2 = fig.add_subplot(grid[1], sharex = axis1)
+    axis2 = fig.add_subplot(grid[1], sharex=axis1)
 
     x = list(gene_df['position'])
     y = list(gene_df['total'])
@@ -153,23 +171,22 @@ def gene_start_positions(gene, output=None, min_reads=None):
     r = [i/100 for i in list(gene_df['%SL'])]
     g = [i/100 for i in list(gene_df['%hairpin'])]
     b = [i/100 for i in list(gene_df['%unidentified'])]
-    col= list(zip(r, g, b))
+    col = list(zip(r, g, b))
 
-    plot = axis2.scatter(x, y ,c=col, s=50, alpha=1, edgecolor='k', linewidth=0.1)
+    axis2.scatter(x, y, c=col, s=50, alpha=1, edgecolor='k', linewidth=0.1)
 
+    # ATG ---------------------------------
+    if show_atg:
+        if gene in ATGPOSITION:
 
-    # ATG ------
+            ATG = ATGPOSITION[gene]
+            _max = max(y)*1.1
 
-    if gene in ATG_positions:
+            for _atg in ATG:
+                axis2.vlines(_atg, 0, _max, colors='k', linestyles='dotted', zorder=-1)
+                axis2.set_ylim(top=_max)
 
-        ATG = ATG_positions[gene]
-        _max = max(y)*1.1
-
-        for _atg in ATG:
-            axis2.vlines(_atg, 0, _max, colors='k', linestyles='dotted', zorder=-1)
-            axis2.set_ylim(top=_max)
-
-    # settings ------
+    # settings ----------------------------
 
     axis2.set_ylabel('number of reads', weight='bold')
     axis2.set_xlabel('genomic start position (bp)', weight='bold')
@@ -184,11 +201,3 @@ def gene_start_positions(gene, output=None, min_reads=None):
     fig.suptitle(name, weight='bold', style='italic', size=14)
 
     return fig
-
-
-if __name__ == '__main__':
-
-    x = pd.DataFrame.from_dict(refname, orient='index')
-
-
-
