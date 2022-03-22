@@ -170,23 +170,24 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
     b = [i/100 for i in list(gene_df['%unidentified'])]
     col = list(zip(r, g, b))
 
-    axis2.scatter(x, y, c=col, s=100, alpha=1, edgecolor='k', linewidth=0.1)
+    axis2.scatter(x, y, c=col, s=120, alpha=1, edgecolor='k')
+
+    _max = max(y)*1.1
 
     # ATG ---------------------------------
     if show_atg:
         if gene in ATGPOSITION:
 
             ATG = ATGPOSITION[gene]
-            _max = max(y)*1.1
 
             for _atg in ATG:
                 axis2.vlines(_atg, 0, _max, colors='k', linestyles='dotted', zorder=-1)
-                axis2.set_ylim(top=_max)
 
     # settings ----------------------------
 
-    axis2.set_ylabel('number of reads', weight='bold', fontsize=18, labelpad=10)
-    axis2.set_xlabel('genomic start position (bp)', weight='bold', fontsize=18, labelpad=10)
+    axis2.set_ylabel('Number of reads', weight='bold', fontsize=18, labelpad=15)
+    axis2.set_xlabel('Genomic start position (bp)', weight='bold', fontsize=18, labelpad=15)
+
     axis2.tick_params(axis='both', left=True, top=False, right=False, bottom=True,
                       labelleft=True, labeltop=False, labelright=False, labelbottom=True)
 
@@ -194,7 +195,7 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
     axis2.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
 
     axis2.set_xlim(start-(0.1*length), (start+(length*1.1)))
-
+    axis2.set_ylim(top=_max)
 
     return fig
 
