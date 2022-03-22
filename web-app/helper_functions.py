@@ -140,10 +140,10 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
     # plot setting ----------------------
 
     sns.set_style("white")
-    fig = plt.figure(figsize=(8, 5), dpi=800)
+    fig = plt.figure(figsize=(15, 8), dpi=800)
 
-    grid = fig.add_gridspec(2, 1, height_ratios=[1, 6],
-                            top=1.05, bottom=0.08, right=0.95, left=0.08, hspace=0.15, wspace=0)
+    grid = fig.add_gridspec(3, 1, height_ratios=[0.8, 0.1, 4],
+                            top=1.1, bottom=0.08, right=0.95, left=0.08, hspace=0.05, wspace=0)
 
     # Gene structure ----------------------
 
@@ -160,7 +160,7 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
 
     #### plotting --------------------------
 
-    axis2 = fig.add_subplot(grid[1], sharex=axis1)
+    axis2 = fig.add_subplot(grid[2], sharex=axis1)
 
     x = list(gene_df['position'])
     y = list(gene_df['total'])
