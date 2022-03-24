@@ -280,7 +280,8 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
     fig.update_yaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
     fig.update_xaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
     fig.update_yaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
-    fig.update_layout(plot_bgcolor="rgb(255,255,255,0)")
+    #fig.update_layout(plot_bgcolor="rgb(255,255,255,255)")
+    fig.update_layout(plot_bgcolor=None)
 
 
     fig.update_yaxes(tickformat=',', ticksuffix='</b>', tickfont=dict(size=14, color='black',family='Roboto'),
