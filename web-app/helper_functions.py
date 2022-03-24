@@ -218,18 +218,6 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
 
 
-    # ATG ---------------------------------
-    if show_atg:
-        if gene in ATGPOSITION:
-
-            ATG = ATGPOSITION[gene]
-
-            for _atg in ATG:
-
-                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black", row=2, col=1)
-
-
-
     ###### gene data points
     gene_data = dataset[dataset['gene'] == gene]
 
@@ -249,6 +237,15 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
 
 
+    # ATG ---------------------------------
+    if show_atg:
+        if gene in ATGPOSITION:
+
+            ATG = ATGPOSITION[gene]
+
+            for _atg in ATG:
+
+                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black", row=2, col=1)
 
 
 
