@@ -226,7 +226,7 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
             for _atg in ATG:
 
-                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black")
+                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black", row=2, col=1)
 
 
 
