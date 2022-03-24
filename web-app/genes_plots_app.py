@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
 import base64
-from helper_functions import gene_start_positions, get_reference_files, get_legend_filepath
+from helper_functions import generate_plot, get_reference_files, get_legend_filepath
 
 
 def bottom_infos():
@@ -22,11 +22,20 @@ def bottom_infos():
 
 
 
-def download_plot():
-    st.sidebar.write('### 3. Download .pdf plot:')
+def download_plotly_static(fig, gene, generef):
 
-    #_ = 0
-    #st.sidebar.download_button('📥 Download', _, file_name='test.pdf')
+    if generef is not None:
+        name_template=f'<b>{gene} ({generef}) </b>'
+    else:
+        name_template=f'<b>{gene}</b>'
+
+    # modify layout for pdf + add title
+    _fig = fig.update_layout(margin=dict(l=100, r=100, b=100, t=100), title_text=name_template, title_font_size=30,
+                             title_font_family='Roboto', title_font_color='black')
+
+    # create pdf file and store in memory as bytes for st.download_button
+    plot_bytes = _fig.to_image(format="pdf", engine="kaleido", width=1000, height=700 , scale=1)
+    st.sidebar.download_button('📥 Download plot', plot_bytes, file_name='test.pdf')
 
 
 
@@ -100,8 +109,8 @@ def plot_settings():
 
 def display_gene_infos(gene, refgene):
 
-    gene_header = '<div style="background: ghostwhite; font-size: 20px; padding: 10px; border-radius: 10px; border: 1px solid lightgray; margin: 10px;">' \
-                  f'<b>Input gene:</b>{refgene} ({gene})<br>' \
+    gene_header = '<div style="background: ghostwhite; font-size: 28px; padding: 10px; border-radius: 10px; border: 1px solid lightgray; margin: 10px;">' \
+                  f'<b>Input gene:</b> {refgene} ({gene})<br>' \
                   '<b>Genomic location:</b> chromosome X : 124058688 - 27465858' \
                   '</div>'
 
@@ -158,21 +167,22 @@ def main():
 
         display_gene_infos(gene, refgene)
 
-        if refgene != gene:
-            st.write(f'### Selected gene: {refgene} ({gene})')
-        else:
-            st.write(f'### Selected gene: {gene}')
+        #if refgene != gene:
+        #    st.write(f'### Selected gene: {refgene} ({gene})')
+        #else:
+        #    st.write(f'### Selected gene: {gene}')
 
-        # generate gene plot
-        gene_plot = gene_start_positions(dataset, gene, genes, exons, GENESNAME, ATGPOSITIONS, show_atg=atg_option)
+        # generate and show gene plot
+        gene_plot = generate_plot(dataset, gene, genes, exons, ATGPOSITIONS, show_atg=atg_option)
+        config = {'displayModeBar': False}
+        st.plotly_chart(gene_plot, use_container_width=True, config=config)
 
-        # show plot with streamlit
-        st.pyplot(gene_plot)
+
         # add legend below
         show_legend()
 
         # show only if plot was generated
-        download_plot()
+        download_plotly_static(gene_plot, gene, refgene)
 
     # show app/labs infos
     #show_biorxiv()

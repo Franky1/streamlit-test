@@ -1,10 +1,10 @@
 import os
 import re
-import matplotlib.pyplot as plt
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+import numpy as np
 import pandas as pd
-import seaborn as sns
 import streamlit as st
-from dna_features_viewer import GraphicFeature, GraphicRecord
 
 
 def isoform_to_gene(isoform):
@@ -61,7 +61,18 @@ def get_reference_files():
     return genes, exons, dataset, GENES, GENESNAME, ATGPOSITIONS
 
 
-def OverlappingExons(start, end, exon):
+
+
+
+def get_legend_filepath():
+
+    path = os.getcwd()
+    filepath = f'{path}/web-app/src/legend.png'
+
+    return filepath
+
+
+def overlapping_exons(start, end, exon):
     x, y = exon
     if x <= start <= y or x <= end <= y:
         return False
@@ -69,14 +80,31 @@ def OverlappingExons(start, end, exon):
         return True
 
 
-def GeneStructure(gene, genes_coord, exons_coord, return_coordinates=False):
+def plotly_gene_structure(fig, gene, genes_coord, exons_coord):
 
     # Select exons for gene of interest and remove duplicates
     exons_coord = exons_coord.loc[exons_coord['gene'] == gene].drop_duplicates(['start', 'end']).sort_values('start')
 
+
+    #### DRAW LINE FIRST
+
+    # get start / end coordinates for the gene
+    gene_start = genes_coord.loc[genes_coord['CDS'] == gene, 'start'].values[0]
+    gene_end = genes_coord.loc[genes_coord['CDS'] == gene, 'end'].values[0]
+
+    # Calculate isoform length
+    gene_length = gene_end - gene_start
+
+    # Create gene line to be plotted
+    fig.add_shape(type="line", x0=gene_start, y0=0.5, x1=gene_end, y1=0.5,
+                  line=dict(color="black", width=1.5),
+                  row=1, col=1)
+
+
+    #### THEN DRAW EXONS
+
     # Process exons
     exons_set = []
-    gene_structure = []
 
     for _, exon in exons_coord.iterrows():
 
@@ -89,90 +117,108 @@ def GeneStructure(gene, genes_coord, exons_coord, return_coordinates=False):
             exons_set.append((start, end))
 
         else:
-            if all([OverlappingExons(start, end, exons_set[n]) for n in range(set_size)]):
+            if all([overlapping_exons(start, end, exons_set[n]) for n in range(set_size)]):
                 exons_set.append((start, end))
 
-    color = {'+': '#ffd1df', '-': '#95d0fc'}
+
     strand = exons_coord['strand'].unique()[0]
 
-    i = 1
-    for exon in exons_set:
+
+    l = gene_length + gene_length*0.2
+    arrow_size = 0.02*l
+
+    for i, exon in enumerate(exons_set):
 
         start, end = exon
+        length = abs(start-end)
 
-        if strand == '-' and i == 1:
-            strd = -1
-            i += 1
+        # bleu fleche vers la gauche (antisense strand last exon)
+        if strand == '-' and i == 0:
 
-        elif strand == '+' and i == len(exons_set):
-            strd = +1
-            i += 1
+            if arrow_size <= length:
 
+                xn = start+(arrow_size)
+
+                fig.add_shape(type="path", path= f' M{start},0.5 L{xn},1 H{end} V0, H{xn} Z',
+                              fillcolor="LightSkyBlue",
+                              line=dict(color="black", width=2),
+                              row=1, col=1)
+
+            else:
+
+
+                fig.add_shape(type="path", path= f' M{start},0.5 L{end},1 V0 Z',
+                              fillcolor="LightSkyBlue",
+                              line=dict(color="black", width=2),
+                              row=1, col=1)
+
+
+        elif strand == '-' and i > 0:
+
+            fig.add_shape(type="rect", x0=start, y0=0, x1=end, y1=1,
+                          line=dict(color="black", width=2), fillcolor="LightSkyBlue",
+                          row=1, col=1)
+
+        # sense strand last exon
+        elif strand == '+' and i+1 == len(exons_set):
+
+
+            if arrow_size <= length:
+
+                xn = end-(arrow_size)
+
+                fig.add_shape(type="path", path= f' M{start},0 V1 H{xn} L{end},0.5 L{xn},0 Z',
+                              fillcolor="LightPink",
+                              line=dict(color="black", width=2),
+                              row=1, col=1)
+            else:
+
+                fig.add_shape(type="path", path= f' M{start},0  V1 L{end},0.5 Z',
+                              fillcolor="LightSkyBlue",
+                              line=dict(color="black", width=2),
+                              row=1, col=1)
+
+        # sense strand
+        elif strand == '+' and i < len(exons_set):
+
+            fig.add_shape(type="rect", x0=start, y0=0, x1=end, y1=1,
+                          line=dict(color="black", width=2), fillcolor="LightPink",
+                          row=1, col=1)
+
+        # unknown strand
         else:
-            strd = 0
-            i += 1
 
-        gene_structure.append(GraphicFeature(start=start, end=end, strand=strd, color=color[strand],
-                                             thickness=25, linewidth=1.5))
-
-    # get start / end coordinates for the gene
-    gene_start = genes_coord.loc[genes_coord['CDS'] == gene, 'start'].values[0]
-    gene_end = genes_coord.loc[genes_coord['CDS'] == gene, 'end'].values[0]
-
-    # Calculate isoform length
-    length = gene_end - gene_start
-
-    # Create feature to be plotted
-    record = GraphicRecord(first_index=gene_start, sequence_length=length, features=gene_structure)
-
-    if return_coordinates is False:
-        return record
-    else:
-        return gene_start, length, record
+            fig.add_shape(type="rect", x0=start, y0=0, x1=end, y1=1,
+                          line=dict(color="black", width=2), fillcolor="grey",
+                          row=1, col=1)
 
 
-def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATGPOSITION, show_atg=True):
+    return gene_start, gene_end, gene_length
 
-    # get common name
 
-    name = f'{GENESNAME[gene]} ({gene})' if GENESNAME[gene] == GENESNAME[gene] else gene
 
-    # plot setting ----------------------
 
-    sns.set_style("white")
-    fig = plt.figure(figsize=(15, 8), dpi=800)
 
-    grid = fig.add_gridspec(3, 1, height_ratios=[0.8, 0.1, 4],
-                            top=1.1, bottom=0.08, right=0.95, left=0.08, hspace=0.05, wspace=0)
+def generate_plot(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_atg=True):
 
-    # Gene structure ----------------------
 
-    axis1 = fig.add_subplot(grid[0])
-    axis1.grid(False)
-    axis1.axis('off')
 
-    start, length, record = GeneStructure(gene, genes_coord, exons_coord, return_coordinates=True)
-    record.plot(ax=axis1)
+    fig = make_subplots(rows=2, cols=1, row_heights=[2, 10], shared_xaxes=True, vertical_spacing=0.02)
 
-    #### computing --------------------------
 
-    gene_df = dataset[dataset['gene'] == gene]
+    # gene model
+    plotly_gene_structure(fig, gene, genes_coord, exons_coord)
 
-    #### plotting --------------------------
+    # lock y axis range on gene model subplot
+    fig.update_yaxes(fixedrange=True, range=[-1, 2], row=1, col=1)
 
-    axis2 = fig.add_subplot(grid[2], sharex=axis1)
+    # remove x axis border on top subplot
+    fig.update_xaxes(visible=False, row=1, col=1)
 
-    x = list(gene_df['position'])
-    y = list(gene_df['total'])
+    # remove y axis border on top subplot
+    fig.update_yaxes(visible=False, row=1, col=1)
 
-    r = [i/100 for i in list(gene_df['%SL'])]
-    g = [i/100 for i in list(gene_df['%hairpin'])]
-    b = [i/100 for i in list(gene_df['%unidentified'])]
-    col = list(zip(r, g, b))
 
-    axis2.scatter(x, y, c=col, s=120, alpha=1, edgecolor=None)
-
-    _max = max(y)*1.1
 
     # ATG ---------------------------------
     if show_atg:
@@ -181,28 +227,73 @@ def gene_start_positions(dataset, gene, genes_coord, exons_coord, GENESNAME, ATG
             ATG = ATGPOSITION[gene]
 
             for _atg in ATG:
-                axis2.vlines(_atg, 0, _max, colors='k', linestyles='dotted', zorder=-1)
 
-    # settings ----------------------------
+                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black")
 
-    axis2.set_ylabel('Number of reads', weight='bold', fontsize=18, labelpad=15)
-    axis2.set_xlabel('Genomic start position (bp)', weight='bold', fontsize=18, labelpad=15)
 
-    axis2.tick_params(axis='both', left=True, top=False, right=False, bottom=True,
-                      labelleft=True, labeltop=False, labelright=False, labelbottom=True)
 
-    axis2.xaxis.set_major_locator(plt.MaxNLocator(7))
-    axis2.yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+    ###### gene data points
+    gene_data = dataset[dataset['gene'] == gene]
 
-    axis2.set_xlim(start-(0.1*length), (start+(length*1.1)))
-    axis2.set_ylim(top=_max)
+    x = list(gene_data['position'])
+    y = list(gene_data['total'])
+
+    r = [i/100*255 for i in list(gene_data['%SL'])]
+    g = [i/100*255 for i in list(gene_data['%hairpin'])]
+    b = [i/100*255 for i in list(gene_data['%unidentified'])]
+    col = list(zip(r, g, b))
+    col = [f'rgb({r},{g},{b})' for r,g,b in [i for i in col] ]
+
+
+    fig.add_trace(go.Scatter(x=x, y=y, mode='markers', marker=dict(color=col, size=10))
+                  , row=2, col=1)
+
+
+
+
+
+
+
+
+
+
+    cstm = np.stack((gene_data['%SL1'], gene_data['%SL2'], gene_data['%hairpin']), axis=-1)
+
+    hovertemplate = ('<b>Position:</b> %{x}<br>'
+                     '<b>Reads:</b> %{y}<br>'+
+                     '<br>'+
+                     '<b>SL1:</b> %{customdata[0]}%<br>' +
+                     '<b>SL2:</b> %{customdata[1]}%<br>' +
+                     '<b>Hairpin:</b> %{customdata[2]}%<br>' +
+                     '<extra></extra>')
+
+    fig.update_traces(customdata=cstm, hovertemplate=hovertemplate, row=2, col=1)
+
+    fig['layout']['yaxis2']['title']='<b>Number of reads</b>'
+    fig['layout']['xaxis2']['title']='<b>genomic start position (bp)</b>'
+
+    x0 = min(x)
+    x1 = max(x)
+    length = x1-x0
+    start = x0-(0.1*length)
+    end = x1+(0.1*length)
+
+    fig.update_layout(xaxis_range=[start, end], width=900, height=500, margin=dict(l=0, r=0, b=0, t=0))
+
+
+    fig.update_xaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
+    fig.update_yaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
+    fig.update_xaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
+    fig.update_yaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
+    fig.update_layout(plot_bgcolor="rgb(255,255,255,255)")
+
+
+    fig.update_yaxes(tickformat=',', ticksuffix='</b>', tickfont=dict(size=14, color='black',family='Roboto'),
+                     ticks = "outside", tickcolor='black', ticklen=5,
+                     title_font=dict(size=16, color='black',family='Roboto'))
+
+    fig.update_xaxes(tickformat=',', ticksuffix='bp', tickfont=dict(size=14, color='black', family='Roboto'),
+                     ticks = "outside", tickcolor='black', ticklen=5,
+                     title_font=dict(size=16, color='black', family='Roboto'))
 
     return fig
-
-
-def get_legend_filepath():
-
-    path = os.getcwd()
-    filepath = f'{path}/web-app/src/legend.png'
-
-    return filepath
