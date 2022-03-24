@@ -56,7 +56,7 @@ def app_settings():
                 MainMenu {visibility: hidden;}
                 footer {visibility: hidden;}
                 header {visibility: hidden;}
-                .appview-container .main .block-container {max-width: 1000px; padding-top: 2rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
+                .appview-container .main .block-container {max-width: 1000px; padding-top: 1rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
                 </style>
                 """
 
