@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
 import base64
-from helper_functions import generate_plot, get_reference_files, get_legend_filepath
+from helper_functions import plot_gene_start, get_reference_files, get_legend_filepath
 
 
 def bottom_infos():
@@ -173,7 +173,7 @@ def main():
         #    st.write(f'### Selected gene: {gene}')
 
         # generate and show gene plot
-        gene_plot = generate_plot(dataset, gene, genes, exons, ATGPOSITIONS, show_atg=atg_option)
+        gene_plot = plot_gene_start(dataset, gene, genes, exons, ATGPOSITIONS, show_atg=atg_option)
         config = {'displayModeBar': False}
         st.plotly_chart(gene_plot, use_container_width=True, config=config)
 

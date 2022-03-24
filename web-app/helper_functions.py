@@ -199,9 +199,7 @@ def plotly_gene_structure(fig, gene, genes_coord, exons_coord):
 
 
 
-def generate_plot(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_atg=True):
-
-
+def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_atg=True):
 
     fig = make_subplots(rows=2, cols=1, row_heights=[2, 10], shared_xaxes=True, vertical_spacing=0.02)
 
