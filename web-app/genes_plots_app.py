@@ -2,6 +2,7 @@ import streamlit as st
 from pathlib import Path
 import base64
 from helper_functions import plot_gene_start, get_reference_files, get_legend_filepath
+import plotly.io as pio
 
 def bottom_infos():
 
@@ -27,7 +28,7 @@ def download_plotly_static(fig, gene, generef):
     # modify layout for pdf + add title
     _fig = fig.update_layout(margin=dict(l=100, r=100, b=100, t=100), title_text=name_template, title_font_size=30,
                              title_font_family='Roboto', title_font_color='black')
-
+    pio.kaleido.scope.chromium_args += ('--single-process','--disable-dev-shm-usage')
     # create pdf file and store in memory as bytes for st.download_button
     #plot_bytes = _fig.to_image(format="pdf", engine="kaleido", width=1000, height=700 , scale=1)
     plot_bytes = _fig.to_image(format="png", width=1000, height=700 , scale=1)
