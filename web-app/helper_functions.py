@@ -216,6 +216,15 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
     # remove y axis border on top subplot
     fig.update_yaxes(visible=False, row=1, col=1)
 
+    # ATG ---------------------------------
+    if show_atg:
+        if gene in ATGPOSITION:
+
+            ATG = ATGPOSITION[gene]
+
+            for _atg in ATG:
+
+                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black", row=2, col=1)
 
 
     ###### gene data points
@@ -237,15 +246,6 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
 
 
-    # ATG ---------------------------------
-    if show_atg:
-        if gene in ATGPOSITION:
-
-            ATG = ATGPOSITION[gene]
-
-            for _atg in ATG:
-
-                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black", row=2, col=1)
 
 
 
@@ -280,7 +280,7 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
     fig.update_yaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
     fig.update_xaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
     fig.update_yaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
-    fig.update_layout(plot_bgcolor="rgb(255,255,255,255)")
+    fig.update_layout(plot_bgcolor="rgb(255,255,255,0)")
 
 
     fig.update_yaxes(tickformat=',', ticksuffix='</b>', tickfont=dict(size=14, color='black',family='Roboto'),
