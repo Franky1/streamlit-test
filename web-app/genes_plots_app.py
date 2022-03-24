@@ -31,7 +31,7 @@ def download_plotly_static(fig, gene, generef):
     _fig = fig.update_layout(margin=dict(l=100, r=100, b=100, t=100), title_text=name_template, title_font_size=30,
                              title_font_family='Roboto', title_font_color='black')
 
-    pio.kaleido.scope.chromium_args += ('--single-process')
+    #pio.kaleido.scope.chromium_args += ('--single-process')
     pio.kaleido.scope.chromium_args = tuple([arg for arg in pio.kaleido.scope.chromium_args if arg != "--disable-dev-shm-usage"])
 
 
