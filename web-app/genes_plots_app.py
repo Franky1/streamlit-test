@@ -37,7 +37,7 @@ def download_plotly_static(fig, gene, generef):
 
     # create pdf file and store in memory as bytes for st.download_button
     #plot_bytes = _fig.to_image(format="pdf", engine="kaleido", width=1000, height=700 , scale=1)
-    plot_bytes = _fig.to_image(format="png", width=1000, height=700 , scale=1)
+    plot_bytes = _fig.to_image(format="pdf", width=1000, height=700 , scale=1)
     st.sidebar.download_button('📥 Download plot', plot_bytes, file_name='test.pdf')
 
 
