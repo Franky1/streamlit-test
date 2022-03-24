@@ -2,9 +2,6 @@ import streamlit as st
 from pathlib import Path
 import base64
 from helper_functions import plot_gene_start, get_reference_files, get_legend_filepath
-import plotly.io as pio
-
-pio.kaleido.scope.chromium_args = tuple([arg for arg in pio.kaleido.scope.chromium_args if arg != "--disable-dev-shm-usage"])
 
 def bottom_infos():
 
