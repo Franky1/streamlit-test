@@ -22,7 +22,7 @@ def bottom_infos():
 
 def download_plotly_static(fig, gene, generef):
 
-    st.sidebar.markdown('###3. Save plot:')
+    st.sidebar.markdown('### 3. Save plot:')
 
     if generef is not None:
         name_template=f'<b>{gene} ({generef}) </b>'
@@ -39,7 +39,7 @@ def download_plotly_static(fig, gene, generef):
 
     # create pdf file and store in memory as bytes for st.download_button
     #plot_bytes = _fig.to_image(format="pdf", engine="kaleido", width=1000, height=700 , scale=1)
-    plot_bytes = _fig.to_image(format="png", width=1000, height=700 , scale=2)
+    plot_bytes = _fig.to_image(format="png", width=1600, height=1000 , scale=2)
     st.sidebar.download_button('📥 Download', plot_bytes, file_name='test.png')
 
 
