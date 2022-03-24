@@ -182,7 +182,7 @@ def main():
         show_legend()
 
         # show only if plot was generated
-        download_plotly_static(gene_plot, gene, refgene)
+        #download_plotly_static(gene_plot, gene, refgene)
 
     # show app/labs infos
     #show_biorxiv()
