@@ -2,12 +2,14 @@ import streamlit as st
 from pathlib import Path
 import base64
 from helper_functions import plot_gene_start, get_reference_files, get_legend_filepath
+import plotly.io as pio
 
+pio.kaleido.scope.chromium_args = tuple([arg for arg in pio.kaleido.scope.chromium_args if arg != "--disable-dev-shm-usage"])
 
 def bottom_infos():
 
     st.sidebar.empty()
-
+    st.sidebar.markdown('<br>', unsafe_allow_html=True)
     st.sidebar.markdown("""---""")
 
     devname = """App created by <b>Florian Bernard</b>."""
@@ -16,10 +18,6 @@ def bottom_infos():
 
     full = devname + """<br>""" + github + '     ' + twitter
     st.sidebar.markdown(full, unsafe_allow_html=True)
-
-
-
-
 
 
 def download_plotly_static(fig, gene, generef):
@@ -36,9 +34,6 @@ def download_plotly_static(fig, gene, generef):
     # create pdf file and store in memory as bytes for st.download_button
     plot_bytes = _fig.to_image(format="pdf", engine="kaleido", width=1000, height=700 , scale=1)
     st.sidebar.download_button('📥 Download plot', plot_bytes, file_name='test.pdf')
-
-
-
 
 
 def img_to_bytes(img_path):
@@ -140,8 +135,6 @@ def show_legend():
         st.markdown(legend_html, unsafe_allow_html=True)
 
 
-
-
 def main():
 
     # general settings
@@ -164,11 +157,6 @@ def main():
 
         display_gene_infos(gene, refgene)
 
-        #if refgene != gene:
-        #    st.write(f'### Selected gene: {refgene} ({gene})')
-        #else:
-        #    st.write(f'### Selected gene: {gene}')
-
         # generate and show gene plot
         gene_plot = plot_gene_start(dataset, gene, genes, exons, ATGPOSITIONS, show_atg=atg_option)
         config = {'displayModeBar': False}
@@ -179,7 +167,7 @@ def main():
         show_legend()
 
         # show only if plot was generated
-        #download_plotly_static(gene_plot, gene, refgene)
+        download_plotly_static(gene_plot, gene, refgene)
 
     # show app/labs infos
     #show_biorxiv()
