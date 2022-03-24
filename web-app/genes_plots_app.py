@@ -55,7 +55,7 @@ def app_settings():
                 <style>
                 #MainMenu {visibility: hidden;}
                 footer {visibility: hidden;}
-                .appview-container .main .block-container {max-width: 1000px; padding-top: 0.01rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
+                .appview-container .main .block-container {max-width: 1000px; padding-top: 0.05rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
                 </style>
                 """
 
@@ -111,6 +111,7 @@ def display_gene_infos(gene, refgene):
                   '</div>'
 
     st.markdown(gene_header, unsafe_allow_html=True)
+    st.markdown('<br>', unsafe_allow_html=True)
 
 
 def show_legend():
