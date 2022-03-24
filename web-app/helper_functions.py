@@ -328,7 +328,6 @@ def app_settings():
                 footer {visibility: hidden;}
                 header {visibility: hidden;}
                 .appview-container .main .block-container {max-width: 1000px; padding-top: 1rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
-                .reportview-container .css-1lcbmhc .css-1outpf7 {{padding-top: 1rem;}}
                 </style>
                 """
 
