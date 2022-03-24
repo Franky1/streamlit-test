@@ -8,8 +8,6 @@ import plotly.io as pio
 
 def bottom_infos():
 
-    st.sidebar.empty()
-    st.sidebar.markdown('<br>', unsafe_allow_html=True)
     st.sidebar.markdown("""---""")
 
     devname = """App created by <b>Florian Bernard</b>."""
@@ -39,7 +37,7 @@ def download_plotly_static(fig, gene, generef):
 
     # create pdf file and store in memory as bytes for st.download_button
     #plot_bytes = _fig.to_image(format="pdf", engine="kaleido", width=1000, height=700 , scale=1)
-    plot_bytes = _fig.to_image(format="png", width=1600, height=1000 , scale=2)
+    plot_bytes = _fig.to_image(format="png", width=1200, height=900 , scale=3)
     st.sidebar.download_button('📥 Download', plot_bytes, file_name='test.png')
 
 
