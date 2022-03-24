@@ -258,7 +258,9 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
     # plots settings ---------------------------------
 
-    fig.update_layout(xaxis_range=[start, end], width=900, height=500, margin=dict(l=0, r=0, b=0, t=0))
+    _start = start - (length*0.1)
+    _end = end + (length*0.1)
+    fig.update_layout(xaxis_range=[_start, _end], width=900, height=500, margin=dict(l=0, r=0, b=0, t=0))
 
     fig.update_yaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True,
                      showgrid=True, gridwidth=0.5, gridcolor='lightgrey',
