@@ -61,9 +61,6 @@ def get_reference_files():
     return genes, exons, dataset, GENES, GENESNAME, ATGPOSITIONS
 
 
-
-
-
 def get_legend_filepath():
 
     path = os.getcwd()
@@ -204,21 +201,17 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
     fig = make_subplots(rows=2, cols=1, row_heights=[2, 10], shared_xaxes=True, vertical_spacing=0.02)
 
 
-    # gene model
+    # plot gene model ---------------------------------
     plotly_gene_structure(fig, gene, genes_coord, exons_coord)
 
-    # lock y axis range on gene model subplot
+    # lock y axis range on gene model subplot and remove axis/grid/etc
     fig.update_yaxes(fixedrange=True, range=[-1, 2], row=1, col=1)
-
-    # remove x axis border on top subplot
     fig.update_xaxes(visible=False, row=1, col=1)
-
-    # remove y axis border on top subplot
     fig.update_yaxes(visible=False, row=1, col=1)
 
 
+    # plot gene data points ---------------------------------
 
-    ###### gene data points
     gene_data = dataset[dataset['gene'] == gene]
 
     x = list(gene_data['position'])
@@ -230,12 +223,10 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
     col = list(zip(r, g, b))
     col = [f'rgb({r},{g},{b})' for r,g,b in [i for i in col] ]
 
+    fig.add_trace(go.Scatter(x=x, y=y, mode='markers', marker=dict(color=col, size=10)), row=2, col=1)
 
-    fig.add_trace(go.Scatter(x=x, y=y, mode='markers', marker=dict(color=col, size=10))
-                  , row=2, col=1)
+    # plot ATG ---------------------------------
 
-
-    # ATG ---------------------------------
     if show_atg:
         if gene in ATGPOSITION:
 
@@ -245,6 +236,7 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
                 fig.add_vline(x=_atg, line_width=1.5, line_dash="dot", line_color="black", row=2, col=1, layer='below')
 
+    # add custom hovering infos ---------------------------------
 
     cstm = np.stack((gene_data['%SL1'], gene_data['%SL2'], gene_data['%hairpin']), axis=-1)
 
@@ -258,8 +250,12 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
     fig.update_traces(customdata=cstm, hovertemplate=hovertemplate, row=2, col=1)
 
+    # add x and y axis labels ---------------------------------
+
     fig['layout']['yaxis2']['title']='<b>Number of reads</b>'
     fig['layout']['xaxis2']['title']='<b>genomic start position (bp)</b>'
+
+    # plots settings ---------------------------------
 
     x0 = min(x)
     x1 = max(x)
@@ -269,24 +265,27 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
     fig.update_layout(xaxis_range=[start, end], width=900, height=500, margin=dict(l=0, r=0, b=0, t=0))
 
+    #
+    #fig.update_xaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
 
-    fig.update_xaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
-    fig.update_yaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
-    fig.update_xaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
-    fig.update_yaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
-    #fig.update_layout(plot_bgcolor="rgb(255,255,255,255)")
-    fig.update_layout({
-    'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-    'paper_bgcolor': 'rgba(0, 0, 0, 0)',
-    })
+    #fig.update_yaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True)
+
+    #fig.update_xaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
+    #fig.update_yaxes(showgrid=True, gridwidth=0.5, gridcolor='lightgrey')
 
 
-    fig.update_yaxes(tickformat=',', ticksuffix='</b>', tickfont=dict(size=14, color='black',family='Roboto'),
+    fig.update_yaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True,
+                     showgrid=True, gridwidth=0.5, gridcolor='lightgrey',
+                     tickformat=',', ticksuffix='</b>', tickfont=dict(size=14, color='black',family='Roboto'),
                      ticks = "outside", tickcolor='black', ticklen=5,
                      title_font=dict(size=16, color='black',family='Roboto'))
 
-    fig.update_xaxes(tickformat=',', ticksuffix='bp', tickfont=dict(size=14, color='black', family='Roboto'),
+    fig.update_xaxes(zeroline=False, showline=True, linewidth=1.2, linecolor='black', mirror=True,
+                     showgrid=True, gridwidth=0.5, gridcolor='lightgrey',
+                     tickformat=',', ticksuffix='bp', tickfont=dict(size=14, color='black', family='Roboto'),
                      ticks = "outside", tickcolor='black', ticklen=5,
                      title_font=dict(size=16, color='black', family='Roboto'))
+
+    fig.update_layout(plot_bgcolor="rgb(255,255,255,255)")
 
     return fig
