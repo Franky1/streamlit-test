@@ -55,7 +55,7 @@ def app_settings():
                 <style>
                 #MainMenu {visibility: hidden;}
                 footer {visibility: hidden;}
-                .appview-container .main .block-container {max-width: 1000px; padding-top: 0.05rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
+                .appview-container .main .block-container {max-width: 1000px; padding-top: 0.2rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
                 </style>
                 """
 
@@ -105,7 +105,7 @@ def plot_settings():
 
 def display_gene_infos(gene, refgene):
 
-    gene_header = '<div style="background: ghostwhite; font-size: 28px; padding: 10px; border-radius: 10px; border: 1px solid lightgray; margin: 10px;">' \
+    gene_header = '<div style="background: ghostwhite; font-size: 16px; padding: 10px; border-radius: 10px; border: 1px solid lightgray; margin: 10px;">' \
                   f'<b>Input gene:</b> {refgene} ({gene})<br>' \
                   '<b>Genomic location:</b> chromosome X : 124058688 - 27465858' \
                   '</div>'
