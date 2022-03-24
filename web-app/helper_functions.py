@@ -243,13 +243,7 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
             for _atg in ATG:
 
-                fig.add_vline(x=_atg, line_width=2, line_dash="dash", line_color="black", row=2, col=1, layer='below')
-
-
-
-
-
-
+                fig.add_vline(x=_atg, line_width=1.5, line_dash="dot", line_color="black", row=2, col=1, layer='below')
 
 
     cstm = np.stack((gene_data['%SL1'], gene_data['%SL2'], gene_data['%hairpin']), axis=-1)

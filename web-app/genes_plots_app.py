@@ -47,10 +47,6 @@ def img_to_bytes(img_path):
     return encoded
 
 
-
-
-
-
 def app_settings():
 
     st.set_page_config(layout="wide", page_title='C.elegans trans-splicing', page_icon='🔬')
@@ -59,7 +55,7 @@ def app_settings():
                 <style>
                 #MainMenu {visibility: hidden;}
                 footer {visibility: hidden;}
-                .reportview-container .main .block-container {max-width: 1000px; padding-top: 1rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
+                .reportview-container .main .block-container {max-width: 1000px; padding-top: 0rem; padding-right: 1.5rem; padding-left: 1.5rem; padding-bottom: 2rem;}
                 </style>
                 """
 
