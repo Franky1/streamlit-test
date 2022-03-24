@@ -202,7 +202,7 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
 
     # plot gene model ---------------------------------
-    plotly_gene_structure(fig, gene, genes_coord, exons_coord)
+    start, end, length = plotly_gene_structure(fig, gene, genes_coord, exons_coord)
 
     # lock y axis range on gene model subplot and remove axis/grid/etc
     fig.update_yaxes(fixedrange=True, range=[-1, 2], row=1, col=1)
@@ -257,11 +257,11 @@ def plot_gene_start(dataset, gene, genes_coord, exons_coord, ATGPOSITION, show_a
 
     # plots settings ---------------------------------
 
-    x0 = min(x)
-    x1 = max(x)
-    length = x1-x0
-    start = x0-(0.1*length)
-    end = x1+(0.1*length)
+    #x0 = min(x)
+    #x1 = max(x)
+    #length = x1-x0
+    #start = x0-(0.1*length)
+    #end = x1+(0.1*length)
 
     fig.update_layout(xaxis_range=[start, end], width=900, height=500, margin=dict(l=0, r=0, b=0, t=0))
 
