@@ -307,7 +307,16 @@ def download_plotly_static(fig, gene, generef):
     #pio.kaleido.scope.chromium_args += ('--single-process')
     # pio.kaleido.scope.chromium_args = tuple([arg for arg in pio.kaleido.scope.chromium_args if arg != "--disable-dev-shm-usage"])
 
-    st.write(str(pio.kaleido.scope.chromium_args))
+    # set explicit headless parameters for chromium (not sure if all are needed)
+    pio.kaleido.scope.chromium_args = tuple(
+        "--headless",
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--disable-features=NetworkService",
+        "--window-size=1920x1080",
+        "--disable-features=VizDisplayCompositor"
+    )
 
     # create pdf file and store in memory as bytes for st.download_button
     #plot_bytes = _fig.to_image(format="pdf", engine="kaleido", width=1000, height=700 , scale=1)
