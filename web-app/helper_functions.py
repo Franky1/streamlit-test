@@ -311,9 +311,10 @@ def download_plotly_static(fig, gene, generef):
     pio.kaleido.scope.chromium_args = (
         "--headless",
         "--no-sandbox",
+        "--single-process",
+        "--disable-gpu",
         # "--disable-dev-shm-usage",
         # "--disable-setuid-sandbox",
-        # "--disable-gpu",
         # "--disable-features=NetworkService",
         # "--window-size=1920x1080",
         # "--disable-features=VizDisplayCompositor"
