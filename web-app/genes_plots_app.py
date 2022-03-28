@@ -14,8 +14,7 @@ def main():
     # chose gene to plot
     gene, refgene = chose_gene(GENES, GENESNAME)
 
-    st.write(gene)
-    st.write(refgene)
+    gene, refgene = check_valid_name(gene, refgene)
 
     # chose plot settings
     atg_option = plot_settings()

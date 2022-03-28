@@ -373,18 +373,31 @@ def chose_gene(GENES, GENESNAME):
             gene = [i for i, v in GENESNAME.items() if gene == v][0]
 
         elif gene not in GENES and GENESNAME.values():
-            st.error('Please enter valid name')
             gene = None
             refgene = None
-        else:
-
-            gene = 'lev-11'
-            refgene = 'Y105E8B.1'
 
         return gene, refgene
 
     else:
         return None, None
+
+
+def check_valid_name(gene, refgene):
+
+    if gene is None and refgene is None:
+
+        gene_header = '<div style="background: lightcoral; font-size: 16px; padding: 10px; border-radius: 10px; border: 1px solid DarkRed; margin: 10px;">' \
+                      f'<b>Gene name not recognized</b> {refgene} ({gene})<br>' \
+                      '<b>' \
+                      '</div>'
+
+        st.markdown(gene_header, unsafe_allow_html=True)
+
+
+    # display example gene
+    gene ='lev-11'
+    refgene = 'Y105E8B.1'
+    return gene,refgene
 
 
 def plot_settings():
