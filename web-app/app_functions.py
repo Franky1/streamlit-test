@@ -409,7 +409,7 @@ def plot_settings():
 
 def display_gene_infos(gene, refgene):
 
-    cols = st.columns(4)
+    cols = st.columns(3)
     with cols[0]:
 
         gene_header = '<div style="background: ghostwhite; font-size: 18px; padding: 10px; border-radius: 5px; border: 1px solid lightgray; margin: 10px;">' \
