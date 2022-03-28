@@ -409,12 +409,14 @@ def plot_settings():
 
 def display_gene_infos(gene, refgene):
 
+    cols = st.columns(3)
+    with cols[0]:
 
-    gene_header = '<div style="background: ghostwhite; font-size: 18px; padding: 10px; border-radius: 5px; border: 1px solid lightgray; margin: 10px;">' \
-                  f'<b>Gene:</b> {refgene} ({gene})<br></div>'
+        gene_header = '<div style="background: ghostwhite; font-size: 18px; padding: 10px; border-radius: 5px; border: 1px solid lightgray; margin: 10px;">' \
+                      f'<b>Gene:</b> {refgene} ({gene})<br></div>'
 
 
-    st.markdown(gene_header, unsafe_allow_html=True)
+        st.markdown(gene_header, unsafe_allow_html=True)
     st.markdown('<br>', unsafe_allow_html=True)
 
 
