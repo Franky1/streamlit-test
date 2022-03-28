@@ -8,6 +8,7 @@ def main():
     # general settings
     app_settings()
 
+    st.write(st.session_state)
     # initialization for showing example gene on session start
     if 'input' not in st.session_state:
         st.session_state['input'] = False
