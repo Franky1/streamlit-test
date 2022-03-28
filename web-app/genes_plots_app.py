@@ -6,6 +6,8 @@ def main():
     # general settings
     app_settings()
 
+    show_title()
+
     # open ref files and cache them
     genes, exons, dataset, GENES, GENESNAME, ATGPOSITIONS = get_reference_files()
 
