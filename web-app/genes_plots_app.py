@@ -14,14 +14,17 @@ def main():
     # chose gene to plot
     gene, refgene = chose_gene(GENES, GENESNAME)
 
+    st.write(gene)
+    st.write(refgene)
+
     # chose plot settings
     atg_option = plot_settings()
 
+    # TO DO: add checking gene name input
     if gene is None:
         st.error('No gene detected')
 
     else:
-
         display_gene_infos(gene, refgene)
 
         # generate and show gene plot
