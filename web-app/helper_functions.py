@@ -327,6 +327,7 @@ def download_plotly_static(fig, gene, generef):
 
 
 def img_to_bytes(img_path):
+
     img_bytes = Path(img_path).read_bytes()
     encoded = base64.b64encode(img_bytes).decode()
     return encoded
@@ -384,7 +385,7 @@ def plot_settings():
 
     st.sidebar.write('### 2. Customize plot:')
 
-    atg_option = st.sidebar.checkbox('Show known ATG positions (WS270)')
+    atg_option = st.sidebar.checkbox('Show known ATG positions (WS270)', value=True)
 
     return atg_option
 
@@ -421,8 +422,18 @@ def show_legend():
                      'the number of supporting reads. The dots are colored according to the observed trans-splicing ' \
                      'events with red indicating a majority of SL reads, green a majority of endogenous hairpin reads ' \
                      'and blue reads with no evidence for either. '
-        #st.write(legend_txt)
+
         legend_html = f'<span style="font-size:120%;">{legend_txt}</span>'
         st.markdown(legend_html, unsafe_allow_html=True)
+
+
+def show_title():
+
+    txt = 'Nanopore direct-cDNA sequencing reveals ubiquity of trans-splicing of <i>C. elegans</i> messengers.'
+    txt2 = 'Florian Bernard, Delphine Dargere, Oded Rechavi, Denis Dupuy.'
+
+    legend_html = f'<span style="font-size:140%;"><b>{txt}</b></span><br><span style="font-size:110%;">{txt2}</span>'
+    st.markdown(legend_html, unsafe_allow_html=True)
+
 
 
