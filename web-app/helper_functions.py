@@ -417,9 +417,10 @@ def show_legend():
 
 def show_title():
 
-    txt = 'Nanopore direct cDNA sequencing reveals ubiquity of trans-splicing of <i>C. elegans</i> messengers.'
+    txt = 'Nanopore direct-cDNA sequencing reveals ubiquity of trans-splicing of <i>C. elegans</i> messengers.'
+    txt2 = 'Florian Bernard, Delphine Dargere, Oded Rechavi, Denis Dupuy.'
 
-    legend_html = f'<span style="font-size:140%;"><b>{txt}</b></span>'
+    legend_html = f'<span style="font-size:140%;"><b>{txt}</b></span><br><span style="font-size:110%;">{txt2}</span>'
     st.markdown(legend_html, unsafe_allow_html=True)
 
 
