@@ -362,7 +362,7 @@ def chose_gene(GENES, GENESNAME):
 
     elif choice == 'Type gene name':
 
-        gene = st.sidebar.text_input('Type:', placeholder='ex: Y105E8B.1 or lev-11', value='lev-11')
+        gene = st.sidebar.text_input('Type:', placeholder='ex: Y105E8B.1 or lev-11')
 
         # CDS format
         if gene in GENES:
@@ -371,11 +371,15 @@ def chose_gene(GENES, GENESNAME):
         elif gene in GENESNAME.values():
             refgene = gene
             gene = [i for i, v in GENESNAME.items() if gene == v][0]
-        else:
-        #    gene = 'Y105E8B.1'
-        #    refgene = 'lev-11'
+
+        elif gene not in GENES and GENESNAME.values():
+            st.error('Please enter valid name')
             gene = None
             refgene = None
+        else:
+
+            gene = 'lev-11'
+            refgene = 'Y105E8B.1'
 
         return gene, refgene
 
