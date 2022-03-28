@@ -1,5 +1,5 @@
 --prefer-binary
-numpy>=1.22.3
+numpy>=1.21.0
 pandas>=1.4.1
 seaborn==0.11.2
 matplotlib>=3.5.1
