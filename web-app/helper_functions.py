@@ -386,9 +386,11 @@ def check_valid_name(gene, refgene):
 
     if gene is None and refgene is None:
 
-        gene_header = '<div style="background: lightcoral; font-size: 16px; padding: 10px; border-radius: 10px; border: 1px solid DarkRed; margin: 10px;">' \
-                      f'<b>Gene name not recognized</b> {refgene} ({gene})<br>' \
-                      '<b>' \
+        gene_header = '<div style="background: lightpink; font-size: 16px; padding: 10px; border-radius: 10px; border: 1px solid DarkRed; margin: 10px;">' \
+                      f'<b>Gene name not recognized.</b><br>' \
+                      'This error can appear because:<br>' \
+                      '- The gene was not detected in our sequencing experiments<br>' \
+                      '- The name entered is invalid<br>' \
                       '</div>'
 
         st.markdown(gene_header, unsafe_allow_html=True)
