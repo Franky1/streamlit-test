@@ -367,12 +367,13 @@ def chose_gene(GENES, GENESNAME):
         # CDS format
         if gene in GENES:
             refgene = GENESNAME[gene]
+
         # Common name
         elif gene in GENESNAME.values():
             refgene = gene
             gene = [i for i, v in GENESNAME.items() if gene == v][0]
 
-        elif gene not in GENES and GENESNAME.values():
+        else:
             gene = None
             refgene = None
 
@@ -386,20 +387,19 @@ def check_valid_name(gene, refgene):
 
     if gene is None and refgene is None:
 
-        gene_header = '<div style="background: lightpink; font-size: 16px; padding: 10px; border-radius: 10px; border: 1px solid DarkRed; margin: 10px;">' \
-                      f'<b>Gene name not recognized.</b><br>' \
-                      'This error can appear because:<br>' \
-                      '- The gene was not detected in our sequencing experiments<br>' \
-                      '- The name entered is invalid<br>' \
-                      '</div>'
+        gene_header = ("<div style=\"background: #ffe2e0; font-size: 16px; padding: 10px; border-radius: 10px; "
+                       "border: 1px solid DarkRed; margin: 10px;\"><div style=\"color: darkred;\"><strong>Requested "
+                       "gene plot cannot be generated.</strong></div><br />This error can appear because:<br />- The "
+                       "name entered is invalid<br />- The requested gene was not detected in our sequencing "
+                       "experiments.<br /><br />Please verify the informations entered and contact the authors if "
+                       "necessary.</div>")
 
         st.markdown(gene_header, unsafe_allow_html=True)
 
+        return False
 
-    # display example gene
-    gene ='lev-11'
-    refgene = 'Y105E8B.1'
-    return gene,refgene
+    else:
+        return True
 
 
 def plot_settings():
