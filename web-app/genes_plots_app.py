@@ -14,6 +14,7 @@ def main():
 
     show_title()
 
+    st.write(st.session_state['input'])
     # open ref files and cache them
     genes, exons, dataset, GENES, GENESNAME, ATGPOSITIONS = get_reference_files()
 
@@ -46,7 +47,7 @@ def main():
         # show only if plot was generated
         download_plotly_static(gene_plot, gene, refgene)
 
-
+    st.write(st.session_state['input'])
 
     # show app/labs infos
     #show_biorxiv()

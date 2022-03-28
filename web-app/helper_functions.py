@@ -352,6 +352,8 @@ def chose_gene(GENES, GENESNAME):
 
     st.sidebar.write('### 1. Chose gene to plot:')
 
+    st.write(st.session_state['input'])
+
     choice = st.sidebar.radio('input method:', options=['Type gene name', 'Select from list'])
 
     if choice == 'Select from list':
@@ -378,6 +380,7 @@ def chose_gene(GENES, GENESNAME):
             refgene = None
 
         st.session_state['input'] = True
+        st.write(st.session_state['input'])
         return gene, refgene
 
     else:
