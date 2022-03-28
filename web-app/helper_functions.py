@@ -419,7 +419,7 @@ def show_title():
 
     txt = 'Nanopore direct cDNA sequencing reveals ubiquity of trans-splicing of <i>C. elegans</i> messengers.'
 
-    legend_html = f'<span style="font-size:150%;"><b>{txt}</b></span>'
+    legend_html = f'<span style="font-size:140%;"><b>{txt}</b></span>'
     st.markdown(legend_html, unsafe_allow_html=True)
 
 
