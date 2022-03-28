@@ -46,7 +46,7 @@ def main():
         show_legend()
 
         # show only if plot was generated
-        #download_plotly_static(gene_plot, gene, refgene)
+        download_plotly_static(gene_plot, gene, refgene)
 
     st.write(st.session_state['input'])
 
