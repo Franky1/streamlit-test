@@ -352,8 +352,6 @@ def chose_gene(GENES, GENESNAME):
 
     st.sidebar.write('### 1. Chose gene to plot:')
 
-    st.write(st.session_state['input'])
-
     choice = st.sidebar.radio('input method:', options=['Type gene name', 'Select from list'])
 
     if choice == 'Select from list':
@@ -364,7 +362,7 @@ def chose_gene(GENES, GENESNAME):
 
     elif choice == 'Type gene name':
 
-        gene = st.sidebar.text_input('Type:', placeholder='ex: Y105E8B.1 or lev-11')
+        gene = st.sidebar.text_input('Type name (ex: Y105E8B.1 or lev-11):', value='lev-11')
 
         # CDS format
         if gene in GENES:
@@ -380,7 +378,6 @@ def chose_gene(GENES, GENESNAME):
             refgene = None
 
         st.session_state['input'] = True
-        st.write(st.session_state['input'])
         return gene, refgene
 
     else:
