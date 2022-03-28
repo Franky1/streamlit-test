@@ -74,6 +74,7 @@ def get_legend_filepath():
 
 
 def overlapping_exons(start, end, exon):
+
     x, y = exon
     if x <= start <= y or x <= end <= y:
         return False
@@ -85,7 +86,6 @@ def plotly_gene_structure(fig, gene, genes_coord, exons_coord):
 
     # Select exons for gene of interest and remove duplicates
     exons_coord = exons_coord.loc[exons_coord['gene'] == gene].drop_duplicates(['start', 'end']).sort_values('start')
-
 
     #### DRAW LINE FIRST
 
@@ -100,7 +100,6 @@ def plotly_gene_structure(fig, gene, genes_coord, exons_coord):
     fig.add_shape(type="line", x0=gene_start, y0=0.5, x1=gene_end, y1=0.5,
                   line=dict(color="black", width=1.5),
                   row=1, col=1)
-
 
     #### THEN DRAW EXONS
 
@@ -363,7 +362,7 @@ def chose_gene(GENES, GENESNAME):
 
     elif choice == 'Type gene name':
 
-        gene = st.sidebar.text_input('Type:', placeholder='ex: Y105E8B.1 or lev-11', )
+        gene = st.sidebar.text_input('Type:', placeholder='ex: Y105E8B.1 or lev-11', value='lev-11')
 
         # CDS format
         if gene in GENES:
@@ -373,8 +372,11 @@ def chose_gene(GENES, GENESNAME):
             refgene = gene
             gene = [i for i, v in GENESNAME.items() if gene == v][0]
         else:
-            gene = 'Y105E8B.1'
-            refgene = 'lev-11'
+        #    gene = 'Y105E8B.1'
+        #    refgene = 'lev-11'
+            gene = None
+            refgene = None
+
         return gene, refgene
 
     else:
