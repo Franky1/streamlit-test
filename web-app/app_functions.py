@@ -409,10 +409,10 @@ def plot_settings():
 
 def display_gene_infos(gene, refgene):
 
-    gene_header = '<div style="background: ghostwhite; font-size: 16px; padding: 10px; border-radius: 10px; border: 1px solid lightgray; margin: 10px;">' \
-                  f'<b>Input gene:</b> {refgene} ({gene})<br>' \
-                  '<b>Genomic location:</b> chromosome X : 124058688 - 27465858' \
-                  '</div>'
+
+    gene_header = '<div style="background: ghostwhite; font-size: 18px; padding: 10px; border-radius: 5px; border: 1px solid lightgray; margin: 10px;">' \
+                  f'<b>Gene:</b> {refgene} ({gene})<br></div>'
+
 
     st.markdown(gene_header, unsafe_allow_html=True)
     st.markdown('<br>', unsafe_allow_html=True)
@@ -451,6 +451,8 @@ def show_title():
 
     legend_html = f'<span style="font-size:140%;"><b>{txt}</b></span><br><span style="font-size:110%;">{txt2}</span>'
     st.markdown(legend_html, unsafe_allow_html=True)
+
+
 
 
 
