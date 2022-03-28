@@ -377,29 +377,25 @@ def chose_gene(GENES, GENESNAME):
             gene = None
             refgene = None
 
+        st.session_state['input'] = True
         return gene, refgene
 
     else:
         return None, None
 
 
-def check_valid_name(gene, refgene):
+def display_error():
 
-    if gene is None and refgene is None:
+    gene_header = ("<div style=\"background: #ffe2e0; font-size: 16px; padding: 10px; border-radius: 10px; "
+                   "border: 1px solid DarkRed; margin: 10px;\"><div style=\"color: darkred;\"><strong>Requested "
+                   "gene plot cannot be generated.</strong></div><br />This error can appear because:<br />- The "
+                   "name entered is invalid<br />- The requested gene was not detected in our sequencing "
+                   "experiments.<br /><br />Please verify the informations entered and contact the authors if "
+                   "necessary.</div>")
 
-        gene_header = ("<div style=\"background: #ffe2e0; font-size: 16px; padding: 10px; border-radius: 10px; "
-                       "border: 1px solid DarkRed; margin: 10px;\"><div style=\"color: darkred;\"><strong>Requested "
-                       "gene plot cannot be generated.</strong></div><br />This error can appear because:<br />- The "
-                       "name entered is invalid<br />- The requested gene was not detected in our sequencing "
-                       "experiments.<br /><br />Please verify the informations entered and contact the authors if "
-                       "necessary.</div>")
+    st.markdown(gene_header, unsafe_allow_html=True)
 
-        st.markdown(gene_header, unsafe_allow_html=True)
 
-        return False
-
-    else:
-        return True
 
 
 def plot_settings():
