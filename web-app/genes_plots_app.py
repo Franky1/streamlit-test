@@ -14,16 +14,14 @@ def main():
     # chose gene to plot
     gene, refgene = chose_gene(GENES, GENESNAME)
 
-    gene, refgene = check_valid_name(gene, refgene)
+    valid = check_valid_name(gene, refgene)
 
     # chose plot settings
     atg_option = plot_settings()
 
     # TO DO: add checking gene name input
-    if gene is None:
-        st.error('No gene detected')
+    if valid is True :
 
-    else:
         display_gene_infos(gene, refgene)
 
         # generate and show gene plot
